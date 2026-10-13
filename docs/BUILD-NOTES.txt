@@ -1,0 +1,73 @@
+쿠팡 물류센터 타이쿤 0.1.0 — 제작 기록
+
+기준일: 2026-10-13 / 모든 시각 KST
+
+1. Godot 다운로드·설치
+- 작업 시작 12:20:09, Godot 실행 파일 준비 12:21:33: 약 1분 24초.
+- Godot 4.7.2 stable, 포터블 설치. Windows 시스템 환경변수는 변경하지 않음.
+- 공식 엔진·export templates의 SHA512 검증 통과.
+- 빌드 템플릿 1.28 GB 다운로드: 12:22:15~12:23:09, 약 54초.
+- JDK 17과 Android SDK/CLI 준비는 다른 단계와 병행.
+
+2. GitHub / MCP / 프로젝트 생성
+- 사용자가 cptycoon 저장소를 직접 생성함.
+- 플러그인 업로드는 403 오류, 이후 사용자 요청으로 원격 업로드 제외.
+- 로컬 Godot 프로젝트와 GitHub Actions 정의를 소스 ZIP으로 제공.
+- GitHub Actions 원격 실행은 검증하지 않음.
+- Coding-Solo/godot-mcp 0.1.1 빌드 완료: 12:23:39.
+- MCP commit: 1209744fad78f3998f98c7394fd0f6ef50da5281
+- MCP 도구 목록·get_godot_version·get_project_info 실제 호출 성공.
+- Codex config.toml에 godot MCP 등록. 현재 채팅의 동적 도구 목록에 재노출되었는지는 확인하지 않음. 새 채팅/앱 재시작 후 확인 가능.
+
+3. Godot 게임 제작
+- HTML의 조작과 그래픽 구성을 GDScript/CanvasItem로 재구현. WebView 없음.
+- 최초 코드 생성 12:30:47, 최초 게임 테스트 통과 12:32:09.
+- 작업 시작부터 첫 플레이 가능한 프로토타입까지 약 12분.
+- 자동 집기/일치 분류/잘못된 분류 거절/8개 완료/코인/업그레이드/재시작 테스트 통과.
+- 모바일 터치, PC 방향키/WASD, 음소거, 다음 근무, 기기 로컬 저장 포함.
+
+4. 빌드
+- 최초 Windows 빌드: 12:41:07~12:41:30, 약 23초.
+- 최초 Web 빌드: 12:41:36~12:42:14, 약 37초.
+- 최초 AAB Gradle 빌드: 12:40:09~12:45:23, 5분 13초.
+- 최초 AAB까지 작업 시작 후 약 25분. 당시 실행 중이던 빌드가 중단 시간 중 완료됨.
+- 최종 APK 서명 완료: 14:07:37.
+- 최종 APK/AAB/Windows/Web 재빌드·서명 완료: 14:09:45.
+- AAB Bundletool 구조 검증, JAR 서명 검증, APK v2/v3 서명 검증 통과.
+- Android APK: arm64-v8a + x86_64, 테스트용 디버그 서명.
+- Android AAB: arm64-v8a, 전용 업로드 키로 릴리스 서명.
+- 패키지: com.remakedigital.cptycoon.prototype / versionCode 1 / versionName 0.1.0.
+- min SDK 24, target SDK 36.
+
+시간 해석
+- 단계별 숫자는 로그/파일 생성 시각 기준. 병행 작업이 있어 합산할 수 없음.
+- 최초 AAB 완료 12:45:23부터 작업 재개 확인 14:03:57까지 약 78분 34초의 대기 구간이 있음.
+- 크레딧 부족으로 자동 승인 검토가 멈춘 구간과 사용자 응답 대기를 개발 시간과 구분해야 함.
+- 다음 제작에서는 엔진/JDK/SDK 다운로드와 초기 Gradle 의존성 다운로드를 재사용할 수 있음.
+
+빌드 환경 이슈
+- 이 Windows 환경의 Godot에서 .bat 도구 실행 실패가 발생함.
+- APK는 Godot unsigned export 후 Java apksigner.jar로 서명.
+- AAB는 Godot이 생성한 Android assets를 사용해 Java GradleWrapperMain으로 빌드 후 jarsigner로 서명.
+- 웹 빌드는 실제 모바일 크기의 Edge에서 로딩·터치 이동·집기 확인, 브라우저 오류 0개.
+- Windows 배포 실행본도 --headless -- --smoke-test 실행 완료.
+- Android 에뮬레이터 검증 상세는 별도 인수인계 문서에 기록.
+
+범위
+- Play Store 업로드는 사용자 담당. 계정/심사/스토어 등록정보 제출은 진행하지 않음.
+- 현재는 프로토타입이며 결제·광고·성과 추적 SDK·채용 지원 랜딩은 미포함.
+- 기존 HTML 코드의 자동 변환이 아니라 로직 이식 작업이며, 이후 Godot 소스는 웹/앱을 함께 빌드 가능.
+
+기술 출처
+Godot: https://godotengine.org/download/windows/
+Android export: https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html
+MCP: https://github.com/Coding-Solo/godot-mcp
+Codex MCP: https://developers.openai.com/codex/mcp
+Noto Sans KR: https://github.com/google/fonts/tree/main/ofl/notosanskr
+
+최종 Android QA
+- Android 15 에뮬레이터에 설치 성공.
+- 호스트 AMD GPU 모드에서 렌더링/터치 이동/집기/분류 확인.
+- 2개 분류 후 coins=20, total=2가 user://progress.cfg에 저장된 것을 확인.
+- SwiftShader 소프트웨어 GPU에는 셰이더 uniform 한계가 있어 호스트 GPU로 검증.
+- 물리 기기 검증은 미진행.

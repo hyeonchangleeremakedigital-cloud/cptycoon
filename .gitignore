@@ -1,0 +1,8 @@
+.godot/
+builds/
+android/
+*.keystore
+*.jks
+.env
+export_credentials.cfg
+*.tmp
